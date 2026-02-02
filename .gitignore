@@ -1,6 +1,8 @@
 # --- Jupyter Notebook 特有文件 ---
 .ipynb_checkpoints/        # 自动保存的检查点文件夹
 */.ipynb_checkpoints/
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/*
 __pycache__/               # Python 编译缓存
 *.py[cod]
 *$py.class
