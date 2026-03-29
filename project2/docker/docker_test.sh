@@ -1,6 +1,7 @@
 #!/bin/bash
 
 gcloud auth login
+docker login -u 
 # ==============================================================================
 # STEP 1: Environment Setup
 # ==============================================================================
@@ -15,35 +16,15 @@ gcloud config set project $PROJECT_ID
 export SOURCE_IMAGE="gcr.io/gleaming-cove-490722-p5/shopping-assistant-api:latest"
 
 # Target image path 
-export MY_IMAGE="$REGION-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/$SERVICE_NAME:latest"
+export MY_IMAGE="docker.io/chet2026/clouding:shopping-assistant-api"
 
 echo "Deploying to Project: $PROJECT_ID"
 
 # ==============================================================================
-# STEP 2: Prepare Artifact Registry & Image Migration
+# STEP 2: Push Image to Docker Hub
 # ==============================================================================
-
-echo "Step 2.1: Enabling Artifact Registry API..."
-gcloud services enable artifactregistry.googleapis.com
-
-echo "Step 2.2: Creating Artifact Registry repository (if not exists)..."
-# Check if the repo exist, or create new one
-gcloud artifacts repositories describe $REPO_NAME --location=$REGION > /dev/null 2>&1 || \
-gcloud artifacts repositories create $REPO_NAME \
-    --repository-format=docker \
-    --location=$REGION \
-    --description="Docker repository for Shopping Assistant"
-
-echo "Step 2.3: Authorizing Docker for Artifact Registry..."
-gcloud auth configure-docker $REGION-docker.pkg.dev --quiet
-
-echo "Step 2.4: Pulling external image..."
-docker pull $SOURCE_IMAGE
-
-echo "Step 2.5: Re-tagging image for Artifact Registry..."
+echo "Step 2: Pushing image to Docker Hub..."
 docker tag $SOURCE_IMAGE $MY_IMAGE
-
-echo "Step 2.6: Pushing image to your private registry..."
 docker push $MY_IMAGE
 
 
