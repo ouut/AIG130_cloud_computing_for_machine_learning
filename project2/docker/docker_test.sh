@@ -1,13 +1,12 @@
 #!/bin/bash
 
 gcloud auth login
-docker login -u 
+docker login
 # ==============================================================================
 # STEP 1: Environment Setup
 # ==============================================================================
 export PROJECT_ID="project-372174a7-7b3a-4058-a00"
 export REGION="us-central1"
-export REPO_NAME="my-docker-repo"  # add：Artifact Registry as the docker repo name
 export SERVICE_NAME="shopping-assistant-api"
 
 gcloud config set project $PROJECT_ID
